@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SimpleSite.Models.Person>
+
+@{ Html.RenderPartial("_PersonSearchForm"); }
+
+<div id="people-data">
+  @Html.DisplayForModel(Model)
+</div>
+
+@*@section scripts
+{
+  <script type="text/javascript">
+        $(function () {
+          $("#search-btn").click(function () {
+            var searchTerm = $("#search-text").val();
+            $.get("SearchPeople", { searchText: searchTerm })
+                .success(function (data) {
+                  $("#people-data").html(data);
+                });
+          });
+        });
+  </script>
+}*@
+
+@section scripts
+{
+  <script type="text/javascript">
+    $(function () {
+      $("#search-btn").click(function () {
+        var searchTerm = $("#search-text").val();
+        if (searchTerm.length == 0) {
+          alert("Enter some search text.");
+          $("#search-btn").focus();
+          return false;
+        }
+
+        $.get("/Person/SearchPeople", { searchText: searchTerm })
+        .success(function (data) {
+          $("#people-data").html(data);
+        });
+      });
+
+      $("#search-text").keypress(function (e) {
+        if (e.which == 13) {
+          e.preventDefault();
+          $("#search-btn").click();
+        }
+      });
+    });
+  </script>
+}
+
+

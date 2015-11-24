@@ -1,0 +1,140 @@
+﻿@using SimpleSite.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+@*@model SimpleSite.Models.IndexViewModel*@
+
+<h2>@ViewBag.Title.</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <p class="text-success">@ViewBag.StatusMessage</p>
+
+        <ul class="nav nav-tabs" role="tablist" id="accountTab">
+            <li class="active"><a href="#notifications" role="tab" data-toggle="tab">Notifications</a></li>
+            <li><a href="#linkedAccounts" role="tab" data-toggle="tab">Linked Accounts</a></li>
+            <li><a href="#passwordReset" role="tab" data-toggle="tab">Password Reset</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="notifications">
+                <div class="table-responsive">
+                    <table class="table table-striped ">
+                        @Html.Partial("_RenderNotifications", ViewBag.NotificationList as IEnumerable<Notification>)
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade in" id="linkedAccounts">
+                <section id="externalLogins">
+                    @* @Html.Action("RemoveAccountList")
+                        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })*@
+                </section>
+            </div>
+            <div class="tab-pane fade in" id="passwordReset">
+                @*@if (ViewBag.HasLocalPassword)
+                    {
+                      @Html.Partial("_ChangePasswordPartial")
+                    }
+                    else
+                    {
+                      @Html.Partial("_SetPasswordPartial")
+                    }*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section topLevel{
+
+    @{ Html.RenderPartial("_RenderNotification.Modal"); }
+
+}
+
+@section Scripts{
+    
+    @Scripts.Render("~/bundles/jqueryval")
+    @{ Html.RenderPartial("_RenderNotifications.js"); }
+}
+
+@*<p class="text-success">@ViewBag.StatusMessage</p>*@
+
+@*<div>
+        <h4>Change your account settings</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Password:</dt>
+            <dd>
+                [
+                @if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Change your password", "ChangePassword")
+                }
+                else
+                {
+                    @Html.ActionLink("Create", "SetPassword")
+                }
+                ]
+            </dd>
+            <dt>External Logins:</dt>
+            <dd>
+                @Model.Logins.Count [
+                @Html.ActionLink("Manage", "ManageLogins") ]
+            </dd>
+
+                Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+                 See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+                 Uncomment the following block after you have set up two-factor authentication
+
+
+                <dt>Phone Number:</dt>
+                <dd>
+                    @(Model.PhoneNumber ?? "None") [
+                    @if (Model.PhoneNumber != null)
+                    {
+                        @Html.ActionLink("Change", "AddPhoneNumber")
+                        @: &nbsp;|&nbsp;
+                        @Html.ActionLink("Remove", "RemovePhoneNumber")
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Add", "AddPhoneNumber")
+                    }
+                    ]
+                </dd>
+
+            <dt>Two-Factor Authentication:</dt>
+            <dd>
+                <p>
+                    There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication.
+                </p>
+                @if (Model.TwoFactor)
+                    {
+                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Enabled
+                            <input type="submit" value="Disable" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Disabled
+                            <input type="submit" value="Enable" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+            </dd>
+        </dl>
+    </div>*@
+
+
